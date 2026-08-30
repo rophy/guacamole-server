@@ -1542,6 +1542,7 @@ void guac_rdp_push_settings(guac_client* client,
     if (guac_settings->enable_gfx) {
 
         freerdp_settings_set_bool(rdp_settings, FreeRDP_SupportGraphicsPipeline, TRUE);
+        freerdp_settings_set_bool(rdp_settings, FreeRDP_GfxH264, TRUE);
         freerdp_settings_set_bool(rdp_settings, FreeRDP_RemoteFxCodec, TRUE);
 
         if (freerdp_settings_get_uint32(rdp_settings, FreeRDP_ColorDepth) != RDP_GFX_REQUIRED_DEPTH) {
@@ -1776,6 +1777,7 @@ void guac_rdp_push_settings(guac_client* client,
     if (guac_settings->enable_gfx) {
 
         rdp_settings->SupportGraphicsPipeline = TRUE;
+        rdp_settings->GfxH264 = TRUE;
         rdp_settings->RemoteFxCodec = TRUE;
 
         if (rdp_settings->ColorDepth != RDP_GFX_REQUIRED_DEPTH) {

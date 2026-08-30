@@ -22,9 +22,7 @@
 #
 
 # The Alpine Linux image that should be used as the basis for the guacd image
-# NOTE: Using 3.18 because the required openssl1.1-compat-dev package was
-# removed in more recent versions.
-ARG ALPINE_BASE_IMAGE=3.18
+ARG ALPINE_BASE_IMAGE=3.21
 
 # The target architecture of the build. Valid values are "ARM" and "X86". By
 # default, this is detected automatically.
@@ -37,8 +35,8 @@ ARG BUILD_JOBS
 # The directory that will house the guacamole-server source during the build 
 ARG BUILD_DIR=/tmp/guacamole-server
 
-# FreeRDP version (default to version 2)
-ARG FREERDP_VERSION=2
+# FreeRDP version
+ARG FREERDP_VERSION=3
 
 # The final install location for guacamole-server and all dependencies. NOTE:
 # This value is hard-coded in the entrypoint. Any change to this value must be
@@ -73,7 +71,7 @@ ARG FREERDP_OPTS="\
     -DWITH_CLIENT=ON \
     -DWITH_CUPS=OFF \
     -DWITH_DIRECTFB=OFF \
-    -DWITH_FFMPEG=OFF \
+    -DWITH_FFMPEG=ON \
     -DWITH_FUSE=OFF \
     -DWITH_GSM=OFF \
     -DWITH_GSSAPI=OFF \
@@ -82,7 +80,7 @@ ARG FREERDP_OPTS="\
     -DWITH_KRB5=ON \
     -DWITH_LIBSYSTEMD=OFF \
     -DWITH_MANPAGES=OFF \
-    -DWITH_OPENH264=OFF \
+    -DWITH_OPENH264=ON \
     -DWITH_OPENSSL=ON \
     -DWITH_OSS=OFF \
     -DWITH_PCSC=OFF \
@@ -92,7 +90,7 @@ ARG FREERDP_OPTS="\
     -DWITH_SERVER_INTERFACE=OFF \
     -DWITH_SHADOW_MAC=OFF \
     -DWITH_SHADOW_X11=OFF \
-    -DWITH_SWSCALE=OFF \
+    -DWITH_SWSCALE=ON \
     -DWITH_WAYLAND=OFF \
     -DWITH_X11=OFF \
     -DWITH_X264=OFF \
@@ -142,6 +140,7 @@ ARG LIBWEBSOCKETS_ARM_OPTS=""
 
 ARG LIBWEBSOCKETS_OPTS="\
     -DDISABLE_WERROR=ON \
+    -DLWS_WITH_HTTP3=OFF \
     -DLWS_WITHOUT_SERVER=ON \
     -DLWS_WITHOUT_TESTAPPS=ON \
     -DLWS_WITHOUT_TEST_CLIENT=ON \
@@ -169,6 +168,7 @@ RUN apk add --no-cache                \
         cjson-dev                     \
         cmake                         \
         cunit-dev                     \
+        ffmpeg-dev                    \
         git                           \
         grep                          \
         krb5-dev                      \
@@ -177,13 +177,14 @@ RUN apk add --no-cache                \
         libtool                       \
         libwebp-dev                   \
         make                          \
-        openssl1.1-compat-dev         \
+        openh264-dev                  \
+        openssl-dev                   \
         pango-dev                     \
         pulseaudio-dev                \
         sdl2-dev                      \
         sdl2_ttf-dev                  \
         util-linux-dev                \
-        webkit2gtk-dev
+        webkit2gtk-4.1-dev
 
 # Copy generic, automatic build script
 COPY ./src/guacd-docker/bin/autobuild.sh ${BUILD_DIR}/src/guacd-docker/bin/
@@ -315,6 +316,7 @@ RUN apk add --no-cache                \
         font-noto-cjk                 \
         ghostscript                   \
         netcat-openbsd                \
+        openh264                      \
         shadow                        \
         terminus-font                 \
         ttf-dejavu                    \
