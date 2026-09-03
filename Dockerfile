@@ -22,7 +22,7 @@
 #
 
 # The Alpine Linux image that should be used as the basis for the guacd image
-ARG ALPINE_BASE_IMAGE=3.21
+ARG ALPINE_BASE_IMAGE=3.24.1
 
 # The target architecture of the build. Valid values are "ARM" and "X86". By
 # default, this is detected automatically.
@@ -63,6 +63,7 @@ ARG WITH_LIBWEBSOCKETS='v\d+(\.\d+)+'
 ARG FREERDP_ARM_OPTS=""
 
 ARG FREERDP_OPTS="\
+    -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
     -DBUILTIN_CHANNELS=OFF \
     -DCHANNEL_URBDRC=OFF \
     -DWITH_ALSA=OFF \
@@ -117,6 +118,7 @@ ARG GUACAMOLE_SERVER_X86_OPTS=""
 ARG LIBSSH2_ARM_OPTS=""
 
 ARG LIBSSH2_OPTS="\
+    -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
     -DBUILD_EXAMPLES=OFF \
     -DBUILD_SHARED_LIBS=ON"
 
@@ -132,13 +134,15 @@ ARG LIBTELNET_X86_OPTS=""
 
 ARG LIBVNCCLIENT_ARM_OPTS=""
 
-ARG LIBVNCCLIENT_OPTS=""
+ARG LIBVNCCLIENT_OPTS="\
+    -DCMAKE_POLICY_VERSION_MINIMUM=3.5"
 
 ARG LIBVNCCLIENT_X86_OPTS=""
 
 ARG LIBWEBSOCKETS_ARM_OPTS=""
 
 ARG LIBWEBSOCKETS_OPTS="\
+    -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
     -DDISABLE_WERROR=ON \
     -DLWS_WITH_HTTP3=OFF \
     -DLWS_WITHOUT_SERVER=ON \
@@ -166,6 +170,7 @@ RUN apk add --no-cache                \
         build-base                    \
         cairo-dev                     \
         cjson-dev                     \
+        cjson-static                  \
         cmake                         \
         cunit-dev                     \
         ffmpeg-dev                    \
